@@ -108,5 +108,32 @@
   }
   @keyframes pop{
     to{ opacity:1; transform: translateY(0); }
+
+    /* チュルンタグの小バッジ */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.9em;
+  border-radius: 999px;
+  font-size: 0.85em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.8em;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 0 12px rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  animation: badgeFade 1.8s ease forwards;
+}
+@keyframes badgeFade {
+  0% { opacity: 0; transform: translateY(-10px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* 各テーマのカラー（好みに調整OK） */
+.badge[data-theme="dream"]   { background: linear-gradient(135deg,#b7a7ff,#6e57ff); }
+.badge[data-theme="light"]   { background: linear-gradient(135deg,#ffcf91,#fca265); }
+.badge[data-theme="memory"]  { background: linear-gradient(135deg,#7ed0ff,#5fa1d9); }
+.badge[data-theme="border"]  { background: linear-gradient(135deg,#b6ffc0,#73e394); }
+.badge[data-theme="dawn"]    { background: linear-gradient(135deg,#ffd0e1,#ff9fb5); }
   }
 </style>
