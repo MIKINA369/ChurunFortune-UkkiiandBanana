@@ -136,4 +136,43 @@
 .badge[data-theme="border"]  { background: linear-gradient(135deg,#b6ffc0,#73e394); }
 .badge[data-theme="dawn"]    { background: linear-gradient(135deg,#ffd0e1,#ff9fb5); }
   }
+/* 🌙夢チュルン */
+.badge.dream {
+  background: #e7e4ff;   /* ほんのり夜明け前の紫 */
+  color: #3a2f6f;
+  border: 1px solid #bfb9ff;
+  box-shadow: 0 0 6px rgba(174, 153, 255, 0.4);
+}
+
+/* 🕯灯火チュルン */
+.badge.light {
+  background: #fff7d6;
+  color: #7b5600;
+  border: 1px solid #ffe8a3;
+  box-shadow: 0 0 6px rgba(255, 220, 120, 0.4);
+}
+
+/* 🪞記憶チュルン */
+.badge.memory {
+  background: #ffe1e8;
+  color: #7a0033;
+  border: 1px solid #ffb6c8;
+  box-shadow: 0 0 6px rgba(255, 150, 180, 0.4);
+}
+
+/* 🌫境界チュルン */
+.badge.border {
+  background: #d9f6ef;
+  color: #004f40;
+  border: 1px solid #b4ece0;
+  box-shadow: 0 0 6px rgba(120, 230, 200, 0.4);
+}
+
+/* 🌅夜明けチュルン */
+.badge.dawn {
+  background: #fff0e1;
+  color: #9a3a00;
+  border: 1px solid #ffd1a3;
+  box-shadow: 0 0 6px rgba(255, 180, 120, 0.4);
+}
 </style>
