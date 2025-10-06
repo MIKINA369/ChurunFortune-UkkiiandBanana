@@ -31,89 +31,53 @@
 <audio id="bell" src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_8bdb0b7d52.mp3?filename=quiet-wind-chimes-6906.mp3"></audio>
 
 <script>
-/** ===== 詩データ（Churun Fortune Ⅱ：20枚） ===== */
-const poems = [
-  // 🌙夢チュルン ×4
-  "眠りの入口で、あなたを呼ぶ声がある。意味を追わずに、その響きのぬくもりだけを聴いて。",
-  "夢の続きは、まだ醒めない。朝が来ても、その祈りを閉じないで。",
-  "夢の中の誰かは、あなたの中の“もう一人のあなた”。目覚めても、手を離さないで。",
-  "懐かしさは、魂の“ただいま”。夢の景色は、あなたが帰る場所。",
-  // 🕯灯火チュルン ×4
-  "あなたの灯は、まだ消えていない。闇の中ほど、美しく燃える。",
-  "言葉にならない想いは、光になる。あなたの沈黙も、ちゃんと世界を照らしている。",
-  "希望は探すものじゃない。あなたの中で静かに燃えている。",
-  "あたたかさを感じた瞬間、それが愛の灯の在りか。",
-  // 🌊記憶チュルン ×4
-  "あの日の涙は、いま光になってあなたの瞳に宿っている。泣いた日の分だけ、世界がやさしく見える。",
-  "記憶のなかのあなたは、まだ息をしている。思い出すたびに、愛が少しずつ息を吹き返す。",
-  "心が疼くのは、再会の前触れ。愛は終わってなどいなかった。",
-  "言えなかった言葉は、風に乗って届いている。ありがとうは、時を越える魔法。",
-  // 🌬境界チュルン ×4
-  "手放すたび、あなたの中の音が澄んでいく。失うことは、響きを取り戻すこと。",
-  "止まることも、進むこと。風が動くまで、空を見上げていよう。",
-  "時は螺旋。あなたが笑えば、すべての瞬間が癒されていく。",
-  "越えていく時、あなたは“まんなか”に戻っていく。別れは、光の形を変えるだけ。",
-  // 🌅夜明けチュルン ×4
-  "朝の光は、あなたの内側から昇る。何も探さなくていい。あなたが“光そのもの”だから。",
-  "昨日のあなたも、美しかった。泣いても笑っても、すべてが“今日”を咲かせている。",
-  "信じることをやめても、愛はあなたを離れない。それは“信じなくても続くもの”。だから安心して、ただ息をして。",
-  "新しい朝は、あなたの笑顔で始まる。この瞬間こそが、永遠の始まり。"
-];
-
-  // 🌕 詩ボックスふわり出現トリガー
-window.addEventListener("load", () => {
-  const poemBox = document.getElementById("poemBox");
-  if (poemBox) {
-    poemBox.classList.add("show"); // ← クラスを追加してアニメ発動
-  }
-});
-
-/** ===== 音と光・出現の演出 ===== */
+// ====== 音・光・要素参照 ======
 const wind = document.getElementById('wind');
 const bell = document.getElementById('bell');
 const poemBox = document.getElementById('poemBox');
-const poemTitle = document.getElementById('poemTitle');
-const poemEl = document.getElementById('poem');
+const poemEl  = document.getElementById('poem');
 const reloadBtn = document.getElementById('reload');
 
-// 自動再生ポリシー対策：音量と再生の準備
 wind.volume = 0.25; bell.volume = 0.20;
 
-window.addEventListener('load', async () => {
-  // 風→（少し待って）→鈴音
-  try { await wind.play(); } catch(e){ /* ユーザー操作まで待機 */ }
-  setTimeout(async ()=>{ try{ await bell.play(); }catch(e){} }, 2200);
+/* ① ユーザー操作で音を解禁（ナビ後のページでも確実に鳴る） */
+function enableSoundOnce(){
+  wind && wind.play().catch(()=>{});
+  setTimeout(()=> bell && bell.play().catch(()=>{}), 1200);
+  window.removeEventListener('pointerdown', enableSoundOnce);
+}
+window.addEventListener('pointerdown', enableSoundOnce, { once:true });
 
-  // 夜→朝の光に合わせて、詩がふわり出現
+/* ② ページロード後に “ふわり” を発火（CSSの .show 連動） */
+window.addEventListener('load', () => {
+  if (poemBox) poemBox.classList.add('show');
+});
+
+/* ③ 詩の抽選と描画 */
+const poems = [ /* ← ここは今の配列のままOK */ ];
+
+window.addEventListener('load', () => {
   const text = poems[Math.floor(Math.random()*poems.length)];
-  const tag = pickTagByPoemIndex(text);
+  const tag  = pickTagByPoemIndex(text);
 
-  // タグバッジを作って追加
-const badge = document.createElement('span');
-badge.classList.add('badge');
-const theme = pickThemeByTag(tag);
-badge.dataset.theme = theme;
-badge.textContent = tag;
-poemBox.prepend(badge);
+  // バッジ
+  const badge = document.createElement('span');
+  badge.classList.add('badge');
+  badge.dataset.theme = pickThemeByTag(tag);
+  badge.textContent = tag;
+  poemBox.prepend(badge);
 
-  // 詩を一文字ずつ描画（ささやき感）
+  // ささやき表示
   typePoem(text, poemEl, 22);
 
-  // 詩ボックス出現
-  setTimeout(()=>{
-    poemBox.style.opacity = 1;
-    poemBox.style.transform = 'translateY(0)';
-    poemBox.style.filter = 'blur(0)';
-  }, 2800);
-
-  // 再抽選ボタン出現
+  // ボタンの出現タイミング（少し早めにしたいなら 1800〜2200ms）
   setTimeout(()=>{
     reloadBtn.style.opacity = 1;
     reloadBtn.style.transform = 'translateY(0)';
-  }, 2800);
+  }, 2200);
 });
 
-// 詩タイプライタ
+/* ユーティリティ */
 function typePoem(text, container, stepMs=24){
   container.innerHTML = '';
   [...text].forEach((ch, i)=>{
@@ -124,8 +88,6 @@ function typePoem(text, container, stepMs=24){
     container.appendChild(span);
   });
 }
-
-// 詩の章タグ（簡易にインデックスで分類/後で精密化可）
 function pickTagByPoemIndex(t){
   const i = poems.indexOf(t);
   const map = [
@@ -137,8 +99,6 @@ function pickTagByPoemIndex(t){
   ];
   return map[i] || "🫧";
 }
-
-  // 🔮テーマタグに応じてクラスを返す関数（ここを追加！）
 function pickThemeByTag(tag){
   if(tag.includes("夢")) return "dream";
   if(tag.includes("灯")) return "light";
@@ -147,7 +107,6 @@ function pickThemeByTag(tag){
   if(tag.includes("夜明け")) return "dawn";
   return "default";
 }
-  
 </script>
   <div class="candle" aria-hidden="true">
   <div class="flame"></div>
