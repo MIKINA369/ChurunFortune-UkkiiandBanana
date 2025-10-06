@@ -129,6 +129,17 @@ function pickTagByPoemIndex(t){
   ];
   return map[i] || "🫧";
 }
+
+  // 🔮テーマタグに応じてクラスを返す関数（ここを追加！）
+function pickThemeByTag(tag){
+  if(tag.includes("夢")) return "dream";
+  if(tag.includes("灯")) return "light";
+  if(tag.includes("記憶")) return "memory";
+  if(tag.includes("境界")) return "border";
+  if(tag.includes("夜明け")) return "dawn";
+  return "default";
+}
+  
 </script>
 </body>
 </html>
