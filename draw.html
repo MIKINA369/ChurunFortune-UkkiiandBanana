@@ -80,7 +80,14 @@ window.addEventListener('load', async () => {
   const text = poems[Math.floor(Math.random()*poems.length)];
   const tag = pickTagByPoemIndex(text);
 
-  poemTitle.textContent = tag + " ";
+  // タグバッジを作って追加
+const badge = document.createElement('span');
+badge.classList.add('badge');
+const theme = pickThemeByTag(tag);
+badge.dataset.theme = theme;
+badge.textContent = tag;
+poemBox.prepend(badge);
+
   // 詩を一文字ずつ描画（ささやき感）
   typePoem(text, poemEl, 22);
 
