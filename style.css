@@ -190,4 +190,23 @@
   box-shadow: 0 0 12px rgba(255,255,255,0.7);
   transform: scale(1.05);
 }
+
+/* タイトルフェードイン */
+h1, .page-title {
+  opacity: 0;
+  transform: translateY(5px);
+  animation: fadeInTitle 2.5s ease forwards;
+  animation-delay: 1s; /* ページ読み込み後ちょっと間をおいて表示 */
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
