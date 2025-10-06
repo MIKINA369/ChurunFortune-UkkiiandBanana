@@ -92,15 +92,19 @@
   }
   #reload:hover{ transform: translateY(6px) scale(1.02); background:#e3dbff; }
 
-  /* 詩の一文字ずつのフェード（ささやき感） */
-  .char{
-    opacity:0; display:inline-block; transform: translateY(8px);
-    animation: pop 680ms ease forwards;
-  }
-  @keyframes pop{
-    to{ opacity:1; transform: translateY(0); }
+/* 詩の一文字ずつのフェード（ささやき感） */
+.char{
+  opacity:0; display:inline-block; transform: translateY(8px);
+  animation: pop 680ms ease forwards;
+}
+@keyframes pop{
+  to{ opacity:1; transform: translateY(0); }
+}   /* ←← このカッコが必要！（ここで終わり） */
 
-    /* チュルンタグの小バッジ */
+
+/* ここからはバッジ系（keyframesの外側に！） */
+
+/* チュルンタグの小バッジ */
 .badge {
   display: inline-block;
   padding: 0.25em 0.9em;
@@ -120,7 +124,7 @@
   0% { opacity: 0; transform: translateY(-10px) scale(0.9); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-/* 各テーマのカラー（好みに調整OK） */
+/* テーマ色 */
 .badge[data-theme="dream"]   { background: linear-gradient(135deg,#b7a7ff,#6e57ff); }
 .badge[data-theme="light"]   { background: linear-gradient(135deg,#ffcf91,#fca265); }
 .badge[data-theme="memory"]  { background: linear-gradient(135deg,#7ed0ff,#5fa1d9); }
