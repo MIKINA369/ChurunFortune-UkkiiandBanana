@@ -66,28 +66,19 @@
     font-size:clamp(14px, 2.0vw, 18px);
   }
 
-  /* 詩ボックス：風の後→光の後にふわり出現 */
-  #poemBox{
-    opacity:0; transform: translateY(28px);
-    filter: blur(2px);
-    transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
-    max-width:min(92vw, 780px);
-    line-height:1.9;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px;
-    padding: 20px 18px;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.28);
-    backdrop-filter: blur(6px);
-  }
-  #poemTitle{
-    opacity:.92; margin:0 0 .4rem; letter-spacing:.06em;
-  }
-  #poem{
-    font-size: clamp(16px, 2.2vw, 20px);
-    margin: .2rem 0 0;
-    white-space:pre-wrap;
-  }
+  /* 🌕 詩ボックスふわり出現（classでON/OFF制御） */
+#poemBox {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(2px);
+  transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
+}
+
+#poemBox.show {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
 
   /* 再抽選ボタン：後から淡く出る */
   #reload{
