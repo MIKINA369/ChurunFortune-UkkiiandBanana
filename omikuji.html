@@ -58,16 +58,19 @@ a:hover {
   const sound = document.getElementById("windSound");
 
   btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    // 再生を試みて、失敗しても遷移は続行
-    const p = sound.play();
-    const go = () => window.location.href = btn.href;
-    if (p && typeof p.catch === "function") {
-      p.then(()=> setTimeout(go, 1500)).catch(()=> go());
-    } else {
+  e.preventDefault();
+  console.log("ボタン押された！"); ←ここ確認用
+  const p = sound.play();
+  const go = () => window.location.href = btn.href;
+  if (p && typeof p.catch === "function") {
+    p.then(()=> {
+      console.log("音再生できた！");
       setTimeout(go, 1500);
-    }
-  });
+    }).catch(()=> go());
+  } else {
+    setTimeout(go, 1500);
+  }
+});
 </script>
 
 
