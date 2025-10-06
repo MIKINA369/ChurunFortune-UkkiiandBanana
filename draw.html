@@ -1,118 +1,237 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>チュルンおみくじの詩｜風がめくる夜</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Churun Fortune Ⅱ｜風がめくる朝</title>
 <style>
-body {
-  background-color: #0b0c10;
-  color: #f1f1f1;
-  font-family: "Yuji Syuku", serif;
-  text-align: center;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-#poemBox {
-  opacity: 0;
-  transform: translateY(50px);
-  animation: appear 3s ease forwards;
-  animation-delay: 3s; /* 🫧 風の後にゆっくり現れる */
-}
-@keyframes appear {
-  0% { opacity: 0; transform: translateY(50px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-.wind {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  background: radial-gradient(ellipse at top, rgba(255,255,255,0.05), transparent 70%);
-  animation: breeze 8s linear infinite;
-}
-@keyframes breeze {
-  0% { transform: translateX(-5%) rotate(0deg); }
-  50% { transform: translateX(5%) rotate(1deg); }
-  100% { transform: translateX(-5%) rotate(0deg); }
-}
-#reload {
-  display: inline-block;
-  margin-top: 2em;
-  padding: 0.6em 1.4em;
-  background-color: #f8f6f1;
-  color: #111;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: bold;
-  letter-spacing: 0.05em;
-  transition: all 0.6s ease;
-  opacity: 0;
-  animation: fadeIn 2s ease forwards;
-  animation-delay: 7s;
-}
-#reload:hover {
-  background-color: #d1c7ff;
-  transform: scale(1.05);
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+  :root{
+    --night:#0b0c10;   /* 深い夜の藍 */
+    --dawn:#2a2f3a;    /* 夜明け前 */
+    --sunrise:#f6efdc; /* やさしい朝の光 */
+    --ink:#f1f1f1;
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: "Yuji Syuku", "Hiragino Mincho ProN", "游明朝", serif;
+    color:var(--ink);
+    overflow:hidden;
+  }
+  /* 夜→朝のグラデーション（最初は夜の静けさ） */
+  .sky{
+    position:fixed; inset:0;
+    background: radial-gradient(80% 60% at 50% 10%, rgba(255,255,255,0.06), transparent 70%),
+                linear-gradient(180deg, var(--night), #121318 55%, var(--dawn) 100%);
+    animation: dawn 12s ease-in forwards;
+    animation-delay: 2.5s; /* 風がそっと流れた後に光が差す */
+  }
+  @keyframes dawn{
+    0%{
+      background: radial-gradient(80% 60% at 50% 10%, rgba(255,255,255,0.06), transparent 70%),
+                  linear-gradient(180deg, var(--night), #121318 55%, var(--dawn) 100%);
+      filter: brightness(100%);
+    }
+    60%{
+      background: radial-gradient(80% 60% at 50% 10%, rgba(255,255,255,0.08), transparent 70%),
+                  linear-gradient(180deg, #171922, var(--dawn) 65%, #ddd5c4 100%);
+      filter: brightness(115%);
+    }
+    100%{
+      background: radial-gradient(80% 60% at 50% 0%, rgba(255,255,255,0.12), transparent 70%),
+                  linear-gradient(180deg, #1c2030, #e9e1cd 70%, var(--sunrise) 100%);
+      filter: brightness(125%);
+    }
+  }
+  /* ゆるい風の“揺らぎ”層 */
+  .breeze{
+    position:fixed; inset:0; pointer-events:none;
+    background: radial-gradient(50% 40% at 50% 0%, rgba(255,255,255,0.05), transparent 60%);
+    animation: breeze 9s ease-in-out infinite;
+  }
+  @keyframes breeze{
+    0%   { transform: translateX(-2%) translateY(0) rotate(0deg);   opacity:.55;}
+    50%  { transform: translateX(2%)  translateY(1%) rotate(0.6deg);opacity:.75;}
+    100% { transform: translateX(-2%) translateY(0) rotate(0deg);   opacity:.55;}
+  }
+
+  /* コンテンツ */
+  .wrap{
+    position:relative; z-index:2;
+    min-height:100dvh;
+    display:grid; place-items:center;
+    padding:6vh 4vw;
+    text-align:center;
+  }
+  .title{
+    margin:0 0 .6rem;
+    font-weight:600; letter-spacing:.08em; font-size:clamp(18px, 2.6vw, 22px);
+  }
+  .subtitle{
+    opacity:.9; margin:0 0 2.2rem; line-height:1.75;
+    font-size:clamp(14px, 2.0vw, 18px);
+  }
+
+  /* 詩ボックス：風の後→光の後にふわり出現 */
+  #poemBox{
+    opacity:0; transform: translateY(28px);
+    filter: blur(2px);
+    transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
+    max-width:min(92vw, 780px);
+    line-height:1.9;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 20px 18px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.28);
+    backdrop-filter: blur(6px);
+  }
+  #poemTitle{
+    opacity:.92; margin:0 0 .4rem; letter-spacing:.06em;
+  }
+  #poem{
+    font-size: clamp(16px, 2.2vw, 20px);
+    margin: .2rem 0 0;
+    white-space:pre-wrap;
+  }
+
+  /* 再抽選ボタン：後から淡く出る */
+  #reload{
+    opacity:0; transform: translateY(12px);
+    transition: opacity 1.2s ease 1s, transform 1.2s ease 1s;
+    display:inline-block; margin: 1.8rem auto 0;
+    padding:.65em 1.6em; border-radius: 999px;
+    text-decoration:none; color:#111;
+    background:#f8f6f1; letter-spacing:.05em; font-weight:700;
+    box-shadow: 0 6px 26px rgba(0,0,0,.25);
+  }
+  #reload:hover{ transform: translateY(6px) scale(1.02); background:#e3dbff; }
+
+  /* 詩の一文字ずつのフェード（ささやき感） */
+  .char{
+    opacity:0; display:inline-block; transform: translateY(8px);
+    animation: pop 680ms ease forwards;
+  }
+  @keyframes pop{
+    to{ opacity:1; transform: translateY(0); }
+  }
 </style>
 </head>
 <body>
 
-<div class="wind"></div>
+<div class="sky"></div>
+<div class="breeze"></div>
 
-<div id="poemBox">
-  <p>🫧<br><b>あなたに舞い降りた詩</b></p>
-  <p id="poem"></p>
+<div class="wrap">
+  <div>
+    <p class="title">🫧 あなたに舞い降りた詩</p>
+    <p class="subtitle">静けさののち、風と光が言葉を運ぶ。</p>
+
+    <div id="poemBox" aria-live="polite">
+      <p id="poemTitle" style="opacity:.8;margin:.2rem 0 .8rem;"></p>
+      <p id="poem"></p>
+    </div>
+
+    <a id="reload" href="omikuji.html" aria-label="もう一度、風に触れる">もう一度、風に触れる</a>
+  </div>
 </div>
 
-<a id="reload" href="omikuji.html">もう一度、風に触れる</a>
-
-<audio id="windSoft" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_2ce57d3ef8.mp3?filename=soft-wind-ambient-14059.mp3"></audio>
+<!-- 音：風（先にやさしく）、次に鈴音（光の合図） -->
+<audio id="wind" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_2ce57d3ef8.mp3?filename=soft-wind-ambient-14059.mp3"></audio>
+<audio id="bell" src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_8bdb0b7d52.mp3?filename=quiet-wind-chimes-6906.mp3"></audio>
 
 <script>
+/** ===== 詩データ（Churun Fortune Ⅱ：20枚） ===== */
 const poems = [
-  const poems = [
-  // 🌙夢チュルン
+  // 🌙夢チュルン ×4
   "眠りの入口で、あなたを呼ぶ声がある。意味を追わずに、その響きのぬくもりだけを聴いて。",
   "夢の続きは、まだ醒めない。朝が来ても、その祈りを閉じないで。",
   "夢の中の誰かは、あなたの中の“もう一人のあなた”。目覚めても、手を離さないで。",
   "懐かしさは、魂の“ただいま”。夢の景色は、あなたが帰る場所。",
-  // 🕯灯火チュルン
+  // 🕯灯火チュルン ×4
   "あなたの灯は、まだ消えていない。闇の中ほど、美しく燃える。",
   "言葉にならない想いは、光になる。あなたの沈黙も、ちゃんと世界を照らしている。",
   "希望は探すものじゃない。あなたの中で静かに燃えている。",
   "あたたかさを感じた瞬間、それが愛の灯の在りか。",
-  // 🌊記憶チュルン
+  // 🌊記憶チュルン ×4
   "あの日の涙は、いま光になってあなたの瞳に宿っている。泣いた日の分だけ、世界がやさしく見える。",
   "記憶のなかのあなたは、まだ息をしている。思い出すたびに、愛が少しずつ息を吹き返す。",
   "心が疼くのは、再会の前触れ。愛は終わってなどいなかった。",
   "言えなかった言葉は、風に乗って届いている。ありがとうは、時を越える魔法。",
-  // 🌬境界チュルン
+  // 🌬境界チュルン ×4
   "手放すたび、あなたの中の音が澄んでいく。失うことは、響きを取り戻すこと。",
   "止まることも、進むこと。風が動くまで、空を見上げていよう。",
   "時は螺旋。あなたが笑えば、すべての瞬間が癒されていく。",
   "越えていく時、あなたは“まんなか”に戻っていく。別れは、光の形を変えるだけ。",
-  // 🌅夜明けチュルン
+  // 🌅夜明けチュルン ×4
   "朝の光は、あなたの内側から昇る。何も探さなくていい。あなたが“光そのもの”だから。",
   "昨日のあなたも、美しかった。泣いても笑っても、すべてが“今日”を咲かせている。",
   "信じることをやめても、愛はあなたを離れない。それは“信じなくても続くもの”。だから安心して、ただ息をして。",
   "新しい朝は、あなたの笑顔で始まる。この瞬間こそが、永遠の始まり。"
 ];
 
-];
-window.onload = () => {
-  const poem = poems[Math.floor(Math.random() * poems.length)];
-  document.getElementById("poem").textContent = poem;
-  const sound = document.getElementById("windSoft");
-  setTimeout(() => sound.play(), 500); // ふわっと風が鳴る
-};
-</script>
+/** ===== 音と光・出現の演出 ===== */
+const wind = document.getElementById('wind');
+const bell = document.getElementById('bell');
+const poemBox = document.getElementById('poemBox');
+const poemTitle = document.getElementById('poemTitle');
+const poemEl = document.getElementById('poem');
+const reloadBtn = document.getElementById('reload');
 
+// 自動再生ポリシー対策：音量と再生の準備
+wind.volume = 0.25; bell.volume = 0.20;
+
+window.addEventListener('load', async () => {
+  // 風→（少し待って）→鈴音
+  try { await wind.play(); } catch(e){ /* ユーザー操作まで待機 */ }
+  setTimeout(async ()=>{ try{ await bell.play(); }catch(e){} }, 2200);
+
+  // 夜→朝の光に合わせて、詩がふわり出現
+  const text = poems[Math.floor(Math.random()*poems.length)];
+  const tag = pickTagByPoemIndex(text);
+
+  poemTitle.textContent = tag + " ";
+  // 詩を一文字ずつ描画（ささやき感）
+  typePoem(text, poemEl, 22);
+
+  // 詩ボックス出現
+  setTimeout(()=>{
+    poemBox.style.opacity = 1;
+    poemBox.style.transform = 'translateY(0)';
+    poemBox.style.filter = 'blur(0)';
+  }, 2800);
+
+  // 再抽選ボタン出現
+  setTimeout(()=>{
+    reloadBtn.style.opacity = 1;
+    reloadBtn.style.transform = 'translateY(0)';
+  }, 5200);
+});
+
+// 詩タイプライタ
+function typePoem(text, container, stepMs=24){
+  container.innerHTML = '';
+  [...text].forEach((ch, i)=>{
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.style.animationDelay = (i*stepMs/1000)+'s';
+    span.textContent = ch;
+    container.appendChild(span);
+  });
+}
+
+// 詩の章タグ（簡易にインデックスで分類/後で精密化可）
+function pickTagByPoemIndex(t){
+  const i = poems.indexOf(t);
+  const map = [
+    "🌙 夢チュルン","🌙 夢チュルン","🌙 夢チュルン","🌙 夢チュルン",
+    "🕯 灯火チュルン","🕯 灯火チュルン","🕯 灯火チュルン","🕯 灯火チュルン",
+    "🌊 記憶チュルン","🌊 記憶チュルン","🌊 記憶チュルン","🌊 記憶チュルン",
+    "🌬 境界チュルン","🌬 境界チュルン","🌬 境界チュルン","🌬 境界チュルン",
+    "🌅 夜明けチュルン","🌅 夜明けチュルン","🌅 夜明けチュルン","🌅 夜明けチュルン"
+  ];
+  return map[i] || "🫧";
+}
+</script>
 </body>
 </html>
