@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>チュルンおみくじの詩｜風がめくる夜</title>
+<style>
+body {
+  background-color: #0b0c10;
+  color: #f1f1f1;
+  font-family: "Yuji Syuku", serif;
+  text-align: center;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+#poemBox {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: appear 3s ease forwards;
+  animation-delay: 3s; /* 🫧 風の後にゆっくり現れる */
+}
+@keyframes appear {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.wind {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at top, rgba(255,255,255,0.05), transparent 70%);
+  animation: breeze 8s linear infinite;
+}
+@keyframes breeze {
+  0% { transform: translateX(-5%) rotate(0deg); }
+  50% { transform: translateX(5%) rotate(1deg); }
+  100% { transform: translateX(-5%) rotate(0deg); }
+}
+#reload {
+  display: inline-block;
+  margin-top: 2em;
+  padding: 0.6em 1.4em;
+  background-color: #f8f6f1;
+  color: #111;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  transition: all 0.6s ease;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+  animation-delay: 7s;
+}
+#reload:hover {
+  background-color: #d1c7ff;
+  transform: scale(1.05);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="wind"></div>
+
+<div id="poemBox">
+  <p>🫧<br><b>あなたに舞い降りた詩</b></p>
+  <p id="poem"></p>
+</div>
+
+<a id="reload" href="omikuji.html">もう一度、風に触れる</a>
+
+<audio id="windSoft" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_2ce57d3ef8.mp3?filename=soft-wind-ambient-14059.mp3"></audio>
+
+<script>
+const poems = [
+  "静かな夜に、誰かの夢があなたの肩に降りた。",
+  "灯火の奥で、まだ語られない願いが揺れている。",
+  "あなたの涙のしずくが、星座をひとつ書き換えた。",
+  "心の海に沈んだ言葉が、今日、泡になって浮かぶ。",
+  "“おかえり”と風が言う夜、あなたはひとりじゃない。"
+];
+window.onload = () => {
+  const poem = poems[Math.floor(Math.random() * poems.length)];
+  document.getElementById("poem").textContent = poem;
+  const sound = document.getElementById("windSoft");
+  setTimeout(() => sound.play(), 500); // ふわっと風が鳴る
+};
+</script>
+
+</body>
+</html>
