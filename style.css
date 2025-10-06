@@ -66,17 +66,14 @@
     font-size:clamp(14px, 2.0vw, 18px);
   }
 
-  /* 🌕 詩ボックスふわり出現（classでON/OFF制御） */
-#poemBox {
-  opacity: 0;
-  transform: translateY(28px);
+ /* 🌕 詩ボックスふわり出現（classでON/OFF制御） */
+#poemBox{
+  opacity:0; transform: translateY(28px);
   filter: blur(2px);
   transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
 }
-
-#poemBox.show {
-  opacity: 1;
-  transform: translateY(0);
+#poemBox.show{
+  opacity:1; transform: translateY(0);
   filter: blur(0);
 }
 
