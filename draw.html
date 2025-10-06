@@ -30,6 +30,10 @@
 <audio id="wind" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_2ce57d3ef8.mp3?filename=soft-wind-ambient-14059.mp3"></audio>
 <audio id="bell" src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_8bdb0b7d52.mp3?filename=quiet-wind-chimes-6906.mp3"></audio>
 
+ <div class="candle" aria-hidden="true">
+  <div class="flame"></div>
+</div>  
+
 <script>
 // ====== 音・光・要素参照 ======
 const wind = document.getElementById('wind');
@@ -134,8 +138,6 @@ function pickThemeByTag(tag){
   return "default";
 }
 </script>
-  <div class="candle" aria-hidden="true">
-  <div class="flame"></div>
-</div>
+ 
 </body>
 </html>
