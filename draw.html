@@ -60,6 +60,16 @@ const poems = [
   "新しい朝は、あなたの笑顔で始まる。この瞬間こそが、永遠の始まり。"
 ];
 
+  // 🌕 詩ボックスをふわり表示させる（CSSアニメ連携）
+setTimeout(() => {
+  const poemBox = document.getElementById("poemBox");
+  if (poemBox) {
+    poemBox.style.opacity = 1;
+    poemBox.style.transform = "translateY(0)";
+    poemBox.style.filter = "blur(0)";
+  }
+}, 1200); // ← 表示までの時間を調整（ミリ秒）
+
 /** ===== 音と光・出現の演出 ===== */
 const wind = document.getElementById('wind');
 const bell = document.getElementById('bell');
